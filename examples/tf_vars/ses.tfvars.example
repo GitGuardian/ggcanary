@@ -1,0 +1,29 @@
+# To use this notifier, you will need a public domain name managed by AWS Route53
+# The notifier is then configured with the zone_id that correspond to the public hosted zone associated with you domain name,
+# see https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/AboutHZWorkingWith.html
+
+
+
+aws_profile = "YOUR_AWS_PROFILE"
+aws_region  = "us-west-2"
+global_prefix = "CHANGEME"
+
+
+SES_notifier = {
+  enabled = true
+  parameters = {
+    SOURCE_EMAIL_ADDRESS = "canary@my_domain.org"  # email address to send emails from
+    DEST_EMAIL_ADDRESS   = "security_email@my_domain.org"  # email address receiving alerts
+    zone_id              = "000000000000"  # Value to retrieve from Route53, that corresponds to the SOURCE_EMAIL_ADDRESS domain.
+
+  }
+}
+
+
+users = {
+  ggtoken1 = {
+    username = "John Doe",
+    location = "email"
+  },
+  ggtoken2 = {}
+}

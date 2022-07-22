@@ -1,0 +1,24 @@
+# Setup a Slack Webhook
+# https://slack.com/intl/en-gb/help/articles/115005265063-Incoming-webhooks-for-Slack
+
+
+aws_profile = YOUR_AWS_PROFILE
+aws_region = "us-west-2"
+global_prefix = "CHANGME"
+
+
+Slack_notifier = {
+  enabled = true
+  parameters = {
+    WEBHOOK = "REDACTED"  # eg: https://hooks.slack.com/services/CHANGE/ME/FOR_REAL
+  }
+}
+
+
+users = {
+  ggtoken1 = {
+    username = "John Doe",
+    location = "email"
+  },
+  ggtoken2 = {}
+}

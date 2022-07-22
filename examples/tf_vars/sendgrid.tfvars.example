@@ -1,0 +1,26 @@
+# Send emails with SendGrid
+# Go to https://app.sendgrid.com/settings/api_keys to create an API key
+
+
+aws_profile = "YOUR_AWS_PROFILE"
+aws_region  = "us-west-2"
+global_prefix = "CHANGEME"
+
+
+SendGrid_notifier = {
+  enabled = true
+  parameters = {
+    SOURCE_EMAIL_ADDRESS = "canary@my_domain.org"  # email address to send emails from
+    DEST_EMAIL_ADDRESS   = "security_email@my_domain.org"  # email address receiving alerts
+    API_KEY              = "SG.XXXX"  # Account API key
+  }
+}
+
+
+users = {
+  ggtoken1 = {
+    username = "John Doe",
+    location = "email"
+  },
+  ggtoken2 = {}
+}

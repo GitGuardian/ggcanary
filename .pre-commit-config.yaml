@@ -1,0 +1,51 @@
+default_stages: [commit]
+repos:
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-json
+      - id: check-added-large-files
+      - id: check-yaml
+      - id: check-merge-conflict
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+        args: [--config, ./lambda/setup.cfg]
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.9.3
+    hooks:
+      - id: isort
+        args: [--filter-files, --settings-path, ./lambda/setup.cfg]
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v2.20.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  - repo: https://github.com/pre-commit/mirrors-prettier # to format JSON, YAML and markdown files among others
+    rev: v2.4.1
+    hooks:
+      - id: prettier
+
+  - repo: https://github.com/gitguardian/ggshield
+    rev: v1.13.0
+    hooks:
+      - id: ggshield
+        language_version: python3
+        stages: [commit]
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.62.3
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate

@@ -1,0 +1,33 @@
+# Send alerts both with emails (SendGrid) and Slack messages
+# It is possible to create an instance of each notifier
+
+
+aws_profile = "YOUR_AWS_PROFILE"
+aws_region  = "us-west-2"
+global_prefix = "CHANGEME"
+
+
+SendGrid_notifier = {
+  enabled = true
+  parameters = {
+    SOURCE_EMAIL_ADDRESS = "canary@my_domain.org"  # email address to send emails from
+    DEST_EMAIL_ADDRESS   = "security_email@my_domain.org"  # email address receiving alerts
+    API_KEY              = "SG.XXXX"  # Account API key
+  }
+}
+
+Slack_notifier = {
+  enabled = true
+  parameters = {
+    WEBHOOK = "REDACTED"  # eg: https://hooks.slack.com/services/CHANGE/ME/FOR_REAL
+  }
+}
+
+
+users = {
+  ggtoken1 = {
+    username = "John Doe",
+    location = "email"
+  },
+  ggtoken2 = {}
+}

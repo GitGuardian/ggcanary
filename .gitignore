@@ -1,0 +1,56 @@
+# terraform
+*.tfstate*
+.terraform*
+*.tfvars
+
+builds/
+
+.cache_ggshield
+
+__pycache__
+
+# npm
+node_modules/
+
+# webpack-built files
+/iacscanner/static/build/
+/iacscanner/webpack/manifest.json
+
+
+# IntelliJ
+*.iml
+
+.pytest_cache
+
+# Pycharm
+.idea/*
+
+# Sublime text
+*.sublime-project
+*.sublime-workspace
+
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Catch sensitive files
+.env
+secrets.py
+secret.py
+secrets
+
+
+# GG-Shield
+.cache_ggshield
+
+# local configuration files
+backend.tf
