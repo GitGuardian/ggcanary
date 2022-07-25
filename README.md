@@ -26,7 +26,7 @@ The main steps to setup the project are the following:
 1. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT` (or directly save the created credentials in `~/.aws/credentials` and add credentials of your AWS account).
 2. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration):
    1. Add a `backend.tf.json` declaring a backend (examples can be found in [`examples/backend`](./examples/backend)).
-   2. If you use S3 as a backend, run the [`./scripts/configure_s3.sh`](./scripts/configure_s3.sh). This will create the S3 bucket and dynamoDB table to store the terraform state.
+   2. If you use S3 as a backend, run the [`./scripts/configure_s3.sh`](./scripts/configure_s3.sh). This will create the S3 bucket and DynamoDB table to store the terraform state.
 3. Fill a `terraform.tfvars` file, that will contain the configuration of the project (AWS profile to use, ggcanary to create, as well as which notifiers to activate):
    - Examples can be found in [`examples/tf_vars`](./examples/tf_vars).
    - See also the [variables reference](./docs/variables_reference.md).

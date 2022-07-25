@@ -1,5 +1,3 @@
-# If you use this backend, you may need to run the configure_s3 script to create the bucket holding the terraform state.
-
 {
   "terraform": {
     "backend": {
