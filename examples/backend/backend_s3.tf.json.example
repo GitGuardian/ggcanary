@@ -1,0 +1,14 @@
+{
+  "terraform": {
+    "backend": {
+      "s3" {
+        "profile": "CHANGME",
+        "region": "us-west-2",
+        "bucket": "CHANGEME",
+        "key": "terraform.tfstate",
+        "encrypt": "true",
+        "dynamodb_table": "ggcanary-terraform-backend"
+      }
+    }
+  }
+}
