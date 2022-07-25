@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#! /bin/bash
 
 # This script creates the S3 bucket and dynamodb table holding the terraform state.
 

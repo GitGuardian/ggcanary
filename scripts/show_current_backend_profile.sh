@@ -1,3 +1,3 @@
-#! /usr/bin/env bash
+#! /bin/bash
 
 jq .backend.config.profile ./.terraform/terraform.tfstate
