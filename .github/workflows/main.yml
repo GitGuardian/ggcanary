@@ -68,7 +68,7 @@ jobs:
 
       - name: Lint Terraform
         run: |
-          make lint
+          terraform fmt -check -diff
 
   ggshield:
     name: Check for secrets with ggshield
