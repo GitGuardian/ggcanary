@@ -17,8 +17,8 @@ Slack_notifier = {
 
 users = {
   ggtoken1 = {
-    username = "John Doe",
-    location = "email"
-  },
+    tag_1 = "John Doe"
+    source = "email"
+  }
   ggtoken2 = {}
 }
