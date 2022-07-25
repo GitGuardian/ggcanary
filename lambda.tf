@@ -2,19 +2,6 @@ locals {
   lambda_function_name = "${var.global_prefix}-lambda"
 }
 
-resource "null_resource" "generate_requirements" {
-  triggers = {
-    lockfile_sha1 = "${sha1(file("lambda/Pipfile.lock"))}"
-    script_sha1   = "${sha1(file("lambda.tf"))}"
-    target        = "/tmp/tf-lambda-requirements.txt"
-  }
-
-  provisioner "local-exec" {
-    command     = "pipenv run pipfile2req | grep -v botocore | grep -v boto3 | grep -v s3transfer > /tmp/tf-lambda-requirements.txt"
-    working_dir = "lambda"
-  }
-}
-
 locals {
   enabled_notifiers = join(",", [
     for value in local.notifiers : upper(value.name)
@@ -34,14 +21,13 @@ locals {
 
 module "lambda_function" {
 
-  source     = "terraform-aws-modules/lambda/aws"
-  version    = "3.2.0"
-  depends_on = [null_resource.generate_requirements]
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "3.2.0"
 
   source_path = [
     {
       path             = "lambda/entrypoint.py",
-      pip_requirements = "/tmp/tf-lambda-requirements.txt"
+      pip_requirements = "lambda/requirements.txt"
     },
     {
       path          = "lambda/lambda_py",

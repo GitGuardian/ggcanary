@@ -37,6 +37,17 @@ You will need to modify the `variables.tf` file:
 - The `name` field should be the same as the one used in your notifier class (comparison will be made case-independant).
 - The `enabled` and `parameters` take the values from the variable declared above.
 
+### Update dependencies
+
+If new dependencies were added, it is mandatory to add them to the Pipfile and run the following commands in the environment:
+
+```
+pipenv update
+pipenv run pipfile2req | grep -v botocore | grep -v boto3 | grep -v s3transfer > requirements.txt
+```
+
+This will update the requirements.txt file.
+
 ### Example
 
 Python class: `lambda/lambda_py/notifiers/my_notifier.py`
