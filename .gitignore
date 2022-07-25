@@ -25,6 +25,9 @@ node_modules/
 # Pycharm
 .idea/*
 
+# VSCode
+.vscode
+
 # Sublime text
 *.sublime-project
 *.sublime-workspace
@@ -54,3 +57,4 @@ secrets
 
 # local configuration files
 backend.tf
+backend.tf.json
