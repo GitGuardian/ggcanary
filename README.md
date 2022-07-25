@@ -17,7 +17,6 @@ In order to use this project, you will need:
 - An [AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/). Note that we recommend using an account dedicated to GitGuardian Canary Tokens, to avoid all possible security issues.
 - [AWS cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 - [jq](https://stedolan.github.io/jq/) (usually available through your package manager)
-- [Pipenv](https://pipenv.pypa.io/en/latest/)
 
 ## Setup
 

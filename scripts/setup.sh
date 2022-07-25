@@ -4,7 +4,7 @@
 function check_prerequisite () {
     echo "Checking required dependencies..."
     echo
-    declare -a commands_to_check=(jq pipenv terraform aws)
+    declare -a commands_to_check=(jq terraform aws)
     declare -a not_found
     for command in "${commands_to_check[@]}"
     do
@@ -19,14 +19,6 @@ function check_prerequisite () {
     done
     echo
     return ${#not_found[@]}
-}
-
-function install_pipenv_env () {
-    echo "Installing pipenv environment from './lambda/' ..."
-    cd lambda
-    pipenv install --dev --ignore-pipfile &> /tmp/ggcanary_pipenv_install_logs.txt
-    pipenv_status=$?
-    return $pipenv_status
 }
 
 
@@ -73,20 +65,6 @@ else
     echo "-----------------------------------------"
     echo
 fi
-
-
-install_pipenv_env
-if [[ $? != 0 ]]
-then
-    echo "Something wrong happened while installing pipenv environment."
-    echo "Pipenv installation logs were saved in /tmp/ggcanary_pipenv_install_logs.txt"
-    exit 1
-else
-    echo "Pipenv environment installed successfuly."
-    echo
-    echo "-----------------------------------------"
-fi
-
 
 echo
 echo "Everything is set, you can now keep on with the installation steps."
