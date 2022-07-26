@@ -19,7 +19,7 @@ terraform {
 # terraform state file setup
 # create an S3 bucket to store the state file in
 resource "aws_s3_bucket" "terraform-states-storage" {
-  bucket = var.backend_s3_bucket
+  bucket = var.terraform_backend_s3_bucket
   tags = {
     Name = "S3 Remote Terraform States Store"
     Role = "backend"
