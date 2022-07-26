@@ -52,14 +52,15 @@ data "aws_iam_policy_document" "ggcanary_bucket" {
   }
 }
 
-
 resource "aws_s3_bucket" "ggcanary_bucket" {
   bucket        = "${var.global_prefix}-bucket"
   force_destroy = true
-
-  policy = data.aws_iam_policy_document.ggcanary_bucket.json
 }
 
+resource "aws_s3_bucket_policy" "ggcanary_bucket_policy" {
+  bucket = aws_s3_bucket.ggcanary_bucket.id
+  policy = data.aws_iam_policy_document.ggcanary_bucket.json
+}
 
 resource "aws_s3_bucket_public_access_block" "ggcanary_bucket_public_access" {
   bucket = aws_s3_bucket.ggcanary_bucket.id
