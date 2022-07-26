@@ -32,19 +32,22 @@ To use this project, you will need:
 
 The main steps to set up the project are the following:
 
-1. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT`
-2. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): copy and fill `backend.tf.example` in `backend.tf`
-3. Fill a `terraform.tfvars` file that will contain the configuration of the project (AWS profile to use, ggcanary to create, as well as which notifiers to activate):
+1. [Create an AWS user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) in your account:
+   - Give it [sufficient rights to perform it's task](./docs/deploy_user_rights.md).
+   - Create an access key for that user, that you will use in the next step.
+2. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT`
+3. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): copy and fill `backend.tf.example` in `backend.tf`
+4. Fill a `terraform.tfvars` file that will contain the configuration of the project (AWS profile to use, ggcanary to create, as well as which notifiers to activate):
    - Examples can be found in [`examples/tf_vars`](./examples/tf_vars).
    - See also the [variables reference](./docs/variables_reference.md).
-   - Be sure to provide a unique value for `global_prefix` to avoid name collisions (especially, AWS S3 bucket names have to be unique across all AWS accounts).
-4. If needed, create the S3 bucket and DynamoDB to store the main project state. We provide the `tf_backend` project to do so:
+   - Be sure to provide a unique value for `global_prefix`, to avoid name collisions (especially, AWS S3 bucket names have to be unique across all AWS accounts).
+5. If needed, create the S3 bucket and DynamoDB to store the main project state. We provide the `tf_backend` project to do so:
    1. In the `tf_backend` directory, run `terraform init`
    2. In the same directory, run `terraform apply -var-file="../terraform.tfvars"`
-5. Run `./scripts/setup.sh` to check that you have all the required dependencies.
-6. Run `terraform init`
-7. Run `terraform apply`
-8. ggcanary tokens can be listed using `./scripts/list_keys.sh`
+6. Run `./scripts/setup.sh` to check that you have all the required dependencies
+7. Run `terraform init`
+8. Run `terraform apply`
+9. ggcanary tokens can be listed using `./scripts/list_keys.sh`
 
 # How-tos
 
