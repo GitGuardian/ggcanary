@@ -13,4 +13,4 @@ This terraform can be configured with the following variables:
 | `Slack_notifier`    | Optional      | Configuration of the Slack Notifier.                                                    |
 | `SendGrid_notifier` | Optional      | Configuration of the SendGrid Notifier.                                                 |
 
-See examples in [`examples/tf_vars`](./examples/tf_vars)
+See examples in [`examples/tf_vars`](/examples/tf_vars)
