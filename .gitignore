@@ -49,6 +49,3 @@ secrets
 
 # GG-Shield
 .cache_ggshield
-
-# local configuration files
-backend.tf

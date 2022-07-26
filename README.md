@@ -36,7 +36,7 @@ The main steps to set up the project are the following:
    - Give it [sufficient rights to perform it's task](./docs/deploy_user_rights.md).
    - Create an access key for that user, that you will use in the next step.
 2. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT`
-3. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): copy and fill `backend.tf.example` in `backend.tf`
+3. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): fill `backend.tf` with appropriate values
 4. Fill a `terraform.tfvars` file that will contain the configuration of the project (AWS profile to use, ggcanary to create, as well as which notifiers to activate):
    - Examples can be found in [`examples/tf_vars`](./examples/tf_vars).
    - See also the [variables reference](./docs/variables_reference.md).
