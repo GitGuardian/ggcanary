@@ -12,11 +12,6 @@ __pycache__
 # npm
 node_modules/
 
-# webpack-built files
-/iacscanner/static/build/
-/iacscanner/webpack/manifest.json
-
-
 # IntelliJ
 *.iml
 
