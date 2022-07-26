@@ -59,7 +59,7 @@ We provide some scripts to help you manage your project once you have deployed i
 
 Run `./scripts/ggcanary_call.sh <GGCANARY_NAME>` (e.g. `ggtoken1` in the example [below](#mange-your-ggcanaries)) to perform an AWS call with one of the created GitGuardian Canary Tokens. It will try to list S3 buckets with the given ggcanary and send you a notification since one of the ggcanary tokens was used to perform the call.
 
-The script should return the the following AWS error message:
+The script should return the following AWS error message:
 
 > An error occurred (AccessDenied) when calling the ListBuckets operation: Access Denied
 
