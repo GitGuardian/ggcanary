@@ -1,56 +1,65 @@
+# Detecting intrusion with canary tokens
+
+## What is a canary token
+
+A canary token is a resource that is monitored for access or tampering. Usually, canary tokens come in the form of a URL, file, API key, or email, etc., and trigger alerts whenever someone (presumably an attacker) trips over them.
+
+## How to detect compromised developer and DevOps environments with canary tokens
+
+Canary tokens can be created and deployed in your code repositories, CI/CD pipelines, project management and ticketing systems like Jira or even instant messaging tools like Slack. When triggered, canary tokens can help alert you to early indicators of an intrusion in your developer environments.
+
 # Project description
 
-The purpose of this project is to have a Terraform configuration that allows the creation of GitGuardian Canary Tokens.
+The purpose of the ggcanary project is to provide you with a simple Terraform configuration to create and manage GitGuardian Canary Tokens.
 
-Deploying this project will
+Deploying this project will:
 
-- create credentials that can be used as GitGuardian Canary Tokens. The users associated with these credentials do not have any permission, so they cannot perform any action.
-- create AWS entities required to send alerts when one of these token is used.
+- create AWS credentials for their use as GitGuardian Canary Tokens. The users associated with these credentials do not have any permissions, so they cannot perform any action.
+- create AWS entities required to send alerts when one of the tokens is tampered.
 
 # Project setup
 
 ## Requirements
 
-In order to use this project, you will need:
+To use this project, you will need:
 
-- [terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-- An [AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/). Note that we recommend using an account dedicated to GitGuardian Canary Tokens, to avoid all possible security issues.
+- [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+- An [AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/). We recommend using an account dedicated to GitGuardian Canary Tokens to avoid all possible security issues.
 - [AWS cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 - [jq](https://stedolan.github.io/jq/) (usually available through your package manager)
 
 ## Setup
 
-The main steps to setup the project are the following:
+The main steps to set up the project are the following:
 
 1. [Create an AWS user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) in your account:
    - Give it [sufficient rights to perform it's task](./docs/deploy_user_rights.md).
    - Create an access key for that user, that you will use in the next step.
-2. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT`.
-3. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): copy and fill `backend.tf.example` in `backend.tf`.
-4. Fill a `terraform.tfvars` file, that will contain the configuration of the project (AWS profile to use, ggcanary to create, as well as which notifiers to activate):
+2. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT`
+3. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): copy and fill `backend.tf.example` in `backend.tf`
+4. Fill a `terraform.tfvars` file that will contain the configuration of the project (AWS profile to use, ggcanary to create, as well as which notifiers to activate):
    - Examples can be found in [`examples/tf_vars`](./examples/tf_vars).
    - See also the [variables reference](./docs/variables_reference.md).
    - Be sure to provide a unique value for `global_prefix`, to avoid name collisions (especially, AWS S3 bucket names have to be unique across all AWS accounts).
 5. If needed, create the S3 bucket and DynamoDB to store the main project state. We provide the `tf_backend` project to do so:
    1. In the `tf_backend` directory, run `terraform init`
    2. In the same directory, run `terraform apply -var-file="../terraform.tfvars"`
-6. Run `./scripts/setup.sh` to check that you have all the required dependencies.
-7. Run `terraform init`.
-8. Run `terraform apply`.
-9. Ggcanaries can be listed using `./scripts/list_keys.sh`.
+6. Run `./scripts/setup.sh` to check that you have all the required dependencies
+7. Run `terraform init`
+8. Run `terraform apply`
+9. ggcanary tokens can be listed using `./scripts/list_keys.sh`
 
 # How-tos
 
 ## Use your project
 
-We provide some scripts to help you manage your project, once it is deployed:
+We provide some scripts to help you manage your project once you have deployed it:
 
 ### Test the project
 
-Run `./scripts/ggcanary_call.sh <GGCANARY_NAME>` (e.g. `ggtoken1` in the example [below](#mange-your-ggcanaries)) to perform an AWS call with one of the created GitGuardian Canary Tokens.
-It will try to list S3 buckets with the given ggcanary, and send you a notification, since one of the ggcanary token was used to perform the call.
+Run `./scripts/ggcanary_call.sh <GGCANARY_NAME>` (e.g. `ggtoken1` in the example [below](#mange-your-ggcanaries)) to perform an AWS call with one of the created GitGuardian Canary Tokens. It will try to list S3 buckets with the given ggcanary and send you a notification since one of the ggcanary tokens was used to perform the call.
 
-Please note that it is expected that the script display the following AWS error message:
+The script should return the following AWS error message:
 
 > An error occurred (AccessDenied) when calling the ListBuckets operation: Access Denied
 
@@ -64,9 +73,9 @@ In order to display the keys of a given ggcanary `<GGCANARY_NAME>` from the comm
 
 ## Configure your notifications
 
-GitGuardian Canary Tokens support several notification backends such as Amazon SES, Slack or SendGrid.
+GitGuardian Canary Tokens support several notification backends such as Amazon SES, Slack, or SendGrid.
 
-The notification backends use the variables defined in the `terraform.tfvars` values for configuration.
+The notification backends use the variables defined in the `terraform.tfvars` values for the configuration.
 Examples can be found in [`tf vars examples`](./examples/tfvars).
 
 It is possible to add custom notification backend following [this procedure](./docs/how_to_add_a_notifier.md).
@@ -85,14 +94,14 @@ users = {
 }
 ```
 
-This will create the ggcanaries
+It will create the ggcanaries:
 
 - `ggtoken1` with tags `{"tag_1": "John Doe", "source": "email"}`
 - `ggtoken2` with no tags
 
 ### Add a new ggcanary
 
-In order to add a new ggcanary, you will need to modify the list of ggcanaries. For example, to create a third ggcanary `ggtoken3`, change the value of the `users` block in `terraform.tfvars` to
+To add a new ggcanary, you will need to modify the list of ggcanaries. For example, to create a third ggcanary `ggtoken3`, change the value of the `users` block in `terraform.tfvars` to
 
 ```
 users = {
@@ -111,7 +120,7 @@ Then run `terraform apply`.
 
 ### Remove a ggcanary
 
-In order to remove a ggcanary, delete it in the `terraform.tfvars` and run `terraform apply`. For example, to remove ggcanary `ggtoken1` from the test configuration, change the value of the `users` block in `terraform.tfvars` to
+To remove a ggcanary, delete it in the `terraform.tfvars` and run `terraform apply`. For example, to remove ggcanary `ggtoken1` from the test configuration, change the value of the `users` block in `terraform.tfvars` to
 
 ```
 users = {
@@ -124,7 +133,7 @@ Then run `terraform apply`.
 ### Delete the project
 
 1. Run `terraform destroy` in the main directory.
-2. Delete manually the S3 bucket holding the state (terraform cannot destroy it for safety reasons).
+2. Delete the S3 bucket holding the state (Terraform cannot destroy it for safety reasons).
 3. Run `terraform destroy -var-file="../terraform.tfvars"` in the `tf_backend` directory.
 
 # Limitations
