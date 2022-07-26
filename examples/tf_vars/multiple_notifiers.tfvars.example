@@ -1,9 +1,12 @@
 # Send alerts both with emails (SendGrid) and Slack messages
 # It is possible to create an instance of each notifier
 
-
+# use same value as in backend.tf
 aws_profile = "YOUR_AWS_PROFILE"
+backend_s3_bucket = "CHANGEME"
 aws_region  = "us-west-2"
+
+
 global_prefix = "CHANGEME"
 
 

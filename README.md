@@ -23,17 +23,18 @@ In order to use this project, you will need:
 The main steps to setup the project are the following:
 
 1. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT`.
-2. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration):
-   1. Add a `backend.tf.json` declaring a backend (examples can be found in [`examples/backend`](./examples/backend)).
-   2. If you use S3 as a backend, run the [`./scripts/configure_s3.sh`](./scripts/configure_s3.sh). This will create the S3 bucket and DynamoDB table to store the terraform state.
+2. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): copy and fill `backend.tf.example` in `backend.tf`.
 3. Fill a `terraform.tfvars` file, that will contain the configuration of the project (AWS profile to use, ggcanary to create, as well as which notifiers to activate):
    - Examples can be found in [`examples/tf_vars`](./examples/tf_vars).
    - See also the [variables reference](./docs/variables_reference.md).
    - Be sure to provide a unique value for `global_prefix`, to avoid name collisions (especially, AWS S3 bucket names have to be unique across all AWS accounts).
-4. Run `./scripts/setup.sh` to check that you have all the required dependencies and install the required Python virtualenv.
-5. Run `terraform init`.
-6. Run `terraform apply`.
-7. Ggcanaries can be listed using `./scripts/list_keys.sh`.
+4. If needed, create the S3 bucket and DynamoDB to store the main project state. We provide the `tf_backend` project to do so:
+   1. In the `tf_backend` directory, run `terraform init`
+   2. In the same directory, run `terraform apply -var-file="../terraform.tfvars"`
+5. Run `./scripts/setup.sh` to check that you have all the required dependencies.
+6. Run `terraform init`.
+7. Run `terraform apply`.
+8. Ggcanaries can be listed using `./scripts/list_keys.sh`.
 
 # How-tos
 
@@ -83,7 +84,7 @@ users = {
 
 This will create the ggcanaries
 
-- `ggtoken1` with tags `{"tag_1": "John Doe", "tag_2": "email"}`
+- `ggtoken1` with tags `{"tag_1": "John Doe", "source": "email"}`
 - `ggtoken2` with no tags
 
 ### Add a new ggcanary
@@ -93,8 +94,8 @@ In order to add a new ggcanary, you will need to modify the list of ggcanaries. 
 ```
 users = {
   ggtoken1 = {
-    username = "John Doe"
-    location = "email"
+    tag_1 = "John Doe"
+    source = "email"
   }
   ggtoken2 = {},
   ggtoken3 = {
@@ -116,6 +117,12 @@ users = {
 ```
 
 Then run `terraform apply`.
+
+### Delete the project
+
+1. Run `terraform destroy` in the main directory.
+2. Delete manually the S3 bucket holding the state (terraform cannot destroy it for safety reasons).
+3. Run `terraform destroy -var-file="../terraform.tfvars"` in the `tf_backend` directory.
 
 # Limitations
 

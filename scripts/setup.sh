@@ -26,7 +26,7 @@ function check_files() {
     echo "Checking files needed to deploy..."
     echo
     local res=0
-    declare -a files_to_check=(terraform.tfvars backend.tf.json)
+    declare -a files_to_check=(terraform.tfvars backend.tf)
 
     for file in "${files_to_check[@]}"
     do

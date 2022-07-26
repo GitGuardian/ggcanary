@@ -7,16 +7,19 @@ variable "aws_region" {
   type = string
 }
 
-variable "users" {
-  type    = map(map(string))
-  default = {}
+variable "backend_s3_bucket" {
+  description = "S3 bucket name for terraform state"
+  type        = string
 }
-
 
 variable "global_prefix" {
   type = string
 }
 
+variable "users" {
+  type    = map(map(string))
+  default = {}
+}
 
 variable "SES_notifier" {
   type = object({

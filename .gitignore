@@ -57,4 +57,3 @@ secrets
 
 # local configuration files
 backend.tf
-backend.tf.json
