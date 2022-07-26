@@ -37,17 +37,18 @@ The main steps to set up the project are the following:
    - Create an access key for that user, that you will use in the next step.
 2. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT`
 3. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): fill `backend.tf` with appropriate values
-4. Fill a `terraform.tfvars` file that will contain the configuration of the project (AWS profile to use, ggcanary to create, as well as which notifiers to activate):
+4. Fill a `terraform.tfvars` file that will contain the configuration of the project (AWS profile to use and notifiers to activate):
    - Examples can be found in [`examples/tf_vars`](./examples/tf_vars).
    - See also the [variables reference](./docs/variables_reference.md).
    - Be sure to provide a unique value for `global_prefix`, to avoid name collisions (especially, AWS S3 bucket names have to be unique across all AWS accounts).
-5. If needed, create the S3 bucket and DynamoDB to store the main project state. We provide the `tf_backend` project to do so:
+5. Create ggcanaries in `ggcanaries.auto.tfvars`
+6. If needed, create the S3 bucket and DynamoDB to store the main project state. We provide the `tf_backend` project to do so:
    1. In the `tf_backend` directory, run `terraform init`
    2. In the same directory, run `terraform apply -var-file="../terraform.tfvars"`
-6. Run `./scripts/check_setup.sh` to check that you have all the required dependencies, and that you have correctly setup the project
-7. Run `terraform init`
-8. Run `terraform apply`
-9. ggcanary tokens can be listed using `./scripts/list_keys.sh`
+7. Run `./scripts/check_setup.sh` to check that you have all the required dependencies, and that you have correctly setup the project
+8. Run `terraform init`
+9. Run `terraform apply` (this will create all resources for the ggcanaries)
+10. ggcanary tokens can be listed using `./scripts/list_keys.sh`
 
 # How-tos
 
@@ -101,7 +102,7 @@ It will create the ggcanaries:
 
 ### Add a new ggcanary
 
-To add a new ggcanary, you will need to modify the list of ggcanaries. For example, to create a third ggcanary `ggtoken3`, change the value of the `users` block in `terraform.tfvars` to
+To add a new ggcanary, you will need to modify the list of ggcanaries. For example, to create a third ggcanary `ggtoken3`, change the value of the `users` block in `ggcanaries.auto.tfvars` to
 
 ```
 users = {
@@ -120,7 +121,7 @@ Then run `terraform apply`.
 
 ### Remove a ggcanary
 
-To remove a ggcanary, delete it in the `terraform.tfvars` and run `terraform apply`. For example, to remove ggcanary `ggtoken1` from the test configuration, change the value of the `users` block in `terraform.tfvars` to
+To remove a ggcanary, delete it in the `ggcanaries.auto.tfvars` and run `terraform apply`. For example, to remove ggcanary `ggtoken1` from the test configuration, change the value of the `users` block in `ggcanaries.auto.tfvars` to
 
 ```
 users = {

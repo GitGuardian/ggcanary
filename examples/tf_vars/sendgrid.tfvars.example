@@ -19,12 +19,3 @@ SendGrid_notifier = {
     API_KEY              = "SG.XXXX"  # Account API key
   }
 }
-
-
-users = {
-  ggtoken1 = {
-    tag_1 = "John Doe"
-    source = "email"
-  }
-  ggtoken2 = {}
-}
