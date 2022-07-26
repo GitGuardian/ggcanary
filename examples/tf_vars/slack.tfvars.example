@@ -2,9 +2,13 @@
 # https://slack.com/intl/en-gb/help/articles/115005265063-Incoming-webhooks-for-Slack
 
 
-aws_profile = YOUR_AWS_PROFILE
-aws_region = "us-west-2"
-global_prefix = "CHANGME"
+# use same value as in backend.tf
+aws_profile = "YOUR_AWS_PROFILE"
+backend_s3_bucket = "CHANGEME"
+aws_region  = "us-west-2"
+
+
+global_prefix = "CHANGEME"
 
 
 Slack_notifier = {

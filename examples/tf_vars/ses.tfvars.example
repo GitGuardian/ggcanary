@@ -3,9 +3,12 @@
 # see https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/AboutHZWorkingWith.html
 
 
-
+# use same value as in backend.tf
 aws_profile = "YOUR_AWS_PROFILE"
+backend_s3_bucket = "CHANGEME"
 aws_region  = "us-west-2"
+
+
 global_prefix = "CHANGEME"
 
 
