@@ -25,12 +25,3 @@ Slack_notifier = {
     WEBHOOK = "REDACTED"  # eg: https://hooks.slack.com/services/CHANGE/ME/FOR_REAL
   }
 }
-
-
-users = {
-  ggtoken1 = {
-    tag_1 = "John Doe"
-    source = "email"
-  }
-  ggtoken2 = {}
-}
