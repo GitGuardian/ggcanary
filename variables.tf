@@ -22,6 +22,7 @@ variable "users" {
 }
 
 variable "SES_notifier" {
+  sensitive = true
   type = object({
     enabled = bool
     parameters = object({
@@ -37,6 +38,7 @@ variable "SES_notifier" {
 }
 
 variable "Slack_notifier" {
+  sensitive = true
   type = object({
     enabled = bool
     parameters = object({
@@ -50,6 +52,7 @@ variable "Slack_notifier" {
 }
 
 variable "SendGrid_notifier" {
+  sensitive = true
   type = object({
     enabled = bool
     parameters = object({
