@@ -2,7 +2,7 @@
 
 if [ -z $1 ]
 then
-    echo "Error: Missing argument, example usage: ./scripts/ggcanry_call.sh c1"
+    echo "Error: Missing argument, example usage: ./scripts/ggcanary_call.sh c1"
 else
     echo -e "\nPerforming ggcanary call for USER: $1"
     set -e

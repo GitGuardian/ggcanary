@@ -7,7 +7,7 @@ variable "aws_region" {
   type = string
 }
 
-variable "backend_s3_bucket" {
+variable "terraform_backend_s3_bucket" {
   description = "S3 bucket name for terraform state"
   type        = string
 }
