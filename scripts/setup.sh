@@ -26,7 +26,7 @@ function check_files() {
     echo "Checking files needed to deploy..."
     echo
     local res=0
-    declare -a files_to_check=(terraform.tfvars backend.tf)
+    declare -a files_to_check=(terraform.tfvars)
 
     for file in "${files_to_check[@]}"
     do
@@ -41,6 +41,14 @@ function check_files() {
     echo
     return $res
 }
+
+function check_backend_tf_changed() {
+    echo  "Checking that the terraform backend has been configured..."
+    grep CHANGEME backend.tf
+    local return_value=$(expr 1 - $?)
+    return $return_value
+}
+
 
 check_prerequisite
 if [[ $? != 0 ]]
@@ -65,6 +73,20 @@ else
     echo "-----------------------------------------"
     echo
 fi
+
+check_backend_tf_changed
+if [[ $? != 0 ]]
+then
+    echo "Some values still need to be changed in backend.tf before we can continue."
+    exit 1
+else
+    echo "backend.tf has been filled with appropriate values."
+    echo
+    echo "-----------------------------------------"
+    echo
+fi
+
+
 
 echo
 echo "Everything is set, you can now keep on with the installation steps."
