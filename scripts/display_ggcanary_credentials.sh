@@ -6,7 +6,13 @@ then
 else
     set -e
     user_data=$(terraform state pull | jq ".outputs.ggcanary_access_keys.value[] | select(.name==\"$1\")")
-    key_id=$(echo $user_data | jq -r .access_key_id)
-    key_secret=$(echo $user_data | jq -r .access_key_secret)
-    echo -e "\nGitGuardian Canary Token for $1:\naws_access_key_id = $key_id\naws_secret_access_key = $key_secret"
+    if [ "$user_data" = "" ]
+    then
+        echo -e "Error: User $1 not found"
+        exit 1
+    else
+        key_id=$(echo $user_data | jq -r .access_key_id)
+        key_secret=$(echo $user_data | jq -r .access_key_secret)
+        echo -e "\nGitGuardian Canary Token for $1:\naws_access_key_id = $key_id\naws_secret_access_key = $key_secret"
+    fi
 fi
