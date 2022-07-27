@@ -67,8 +67,9 @@ module "lambda_function" {
     }
   }
 
-  attach_cloudwatch_logs_policy = true
-  attach_policy_statements      = true
+  cloudwatch_logs_retention_in_days = 90
+  attach_cloudwatch_logs_policy     = true
+  attach_policy_statements          = true
   policy_statements = {
     get_object = {
       effect    = "Allow"
@@ -92,7 +93,6 @@ module "lambda_function" {
     }
   }
 }
-
 
 
 resource "aws_s3_bucket_notification" "bucket_notification" {
