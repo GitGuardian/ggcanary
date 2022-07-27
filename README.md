@@ -15,7 +15,7 @@ The purpose of the ggcanary project is to provide you with a simple Terraform co
 Deploying this project will:
 
 - create AWS credentials for their use as GitGuardian Canary Tokens. The users associated with these credentials do not have any permissions, so they cannot perform any action.
-- create the related AWS infrastructure required to store any activities related to these credentials with AWS cloudTrail and AWS S3
+- create the related AWS infrastructure required to store any activities related to these credentials with [AWS CloudTrail](https://aws.amazon.com/cloudtrail/) and [AWS S3](https://aws.amazon.com/s3/).
 - create the related AWS infrastructure required to send alerts when one of the tokens is tampered to different integration such as email, native webhook and Slack. 
 
 # Project setup
