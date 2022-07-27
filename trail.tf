@@ -19,6 +19,8 @@ resource "aws_cloudtrail" "ggcanary_trail" {
       values = ["arn:aws:s3:::"]
     }
   }
+  # https://github.com/hashicorp/terraform/issues/6388
+  depends_on = [aws_s3_bucket_policy.ggcanary_bucket_policy]
 }
 
 

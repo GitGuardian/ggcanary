@@ -104,5 +104,6 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
     filter_prefix       = "ggcanary/AWSLogs/"
     filter_suffix       = ".json.gz"
   }
+  depends_on = [module.lambda_function]
 
 }
