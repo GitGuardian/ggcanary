@@ -6,7 +6,7 @@ A canary token is a resource that is monitored for access or tampering. Usually,
 
 ## How to detect compromised developer and DevOps environments with canary tokens
 
-Canary tokens can be created and deployed in your code repositories, CI/CD pipelines, project management and ticketing systems like Jira or even instant messaging tools like Slack. When triggered, canary tokens can help alert you to early indicators of an intrusion in your developer environments.
+Canary tokens can be created and deployed in your code repositories, CI/CD pipelines, project management and ticketing systems like Jira or even instant messaging tools like Slack. When triggered, canary tokens can help alert you of an intrusion in your developer environments.
 
 # Project description
 
