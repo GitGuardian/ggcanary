@@ -10,12 +10,13 @@ Canary tokens can be created and deployed in your code repositories, CI/CD pipel
 
 # Project description
 
-The purpose of the ggcanary project is to provide you with a simple Terraform configuration to create and manage GitGuardian Canary Tokens.
+The purpose of the ggcanary project is to provide you with a simple Terraform configuration to create and manage GitGuardian Canary Tokens. We chose to focus on AWS credentials as it is one of the most seeked secret by hackers. It can be found and deployed in multiple places of the SDLC: in source code, in docker containers, as secrets variable in various CI. If a hacker breach your software development toolchain, its first action will be to look for secrets and especially AWS credentials.
 
 Deploying this project will:
 
 - create AWS credentials for their use as GitGuardian Canary Tokens. The users associated with these credentials do not have any permissions, so they cannot perform any action.
-- create AWS entities required to send alerts when one of the tokens is tampered.
+- create the related AWS infrastructure required to store any activities related to these credentials with [AWS CloudTrail](https://aws.amazon.com/cloudtrail/) and [AWS S3](https://aws.amazon.com/s3/).
+- create the related AWS infrastructure required to send alerts when one of the tokens is tampered to different integration such as email, native webhook and Slack. 
 
 # Project setup
 
