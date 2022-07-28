@@ -34,7 +34,7 @@ To use this project, you will need:
 The main steps to set up the project are the following:
 
 1. [Create an AWS user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) in your account:
-   - Give it [sufficient rights to perform it's task](./docs/deploy_user_rights.md).
+   - Give it [sufficient rights to perform its task](./docs/deploy_user_rights.md).
    - Create an access key for that user, that you will use in the next step.
 2. Configure your AWS profile for the project. You can run `aws configure --profile YOUR_AWS_ACCOUNT`
 3. Setup the [Terraform backend](https://www.terraform.io/language/settings/backends/configuration): fill `backend.tf` with appropriate values
