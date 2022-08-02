@@ -6,7 +6,10 @@ from ..types import LogRecord, ReportEntry
 def format_record(record: LogRecord) -> str:
     eventSource = record.raw_data.get("eventSource")
     eventName = record.raw_data.get("eventName")
-    return f"- At *{record.time}*, from *{record.sourceIPAddress}* - called {eventSource}:{eventName}"
+    return (
+        f"- At *{record.time}*, from *{record.sourceIPAddress}* "
+        f"- called {eventSource}:{eventName} via user agent {record.user_agent}"
+    )
 
 
 def format_report_entry(report_entry: ReportEntry) -> str:
