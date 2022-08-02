@@ -8,6 +8,7 @@ class LogRecord:
     sourceIPAddress: str
     time: str
     raw_data: Dict
+    user_agent: str
 
     @classmethod
     def from_raw_record(cls, raw_record: Dict) -> Optional["LogRecord"]:
@@ -16,11 +17,13 @@ class LogRecord:
             return None
         sourceIPAddress = raw_record["sourceIPAddress"]
         time = raw_record["eventTime"]
+        user_agent = raw_record["userAgent"]
         return cls(
             username=username,
             sourceIPAddress=sourceIPAddress,
             time=time,
             raw_data=raw_record,
+            user_agent=user_agent,
         )
 
 
