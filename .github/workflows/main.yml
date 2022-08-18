@@ -79,10 +79,24 @@ jobs:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
       - name: GitGuardian scan
-        uses: GitGuardian/gg-shield-action@master
+        uses: GitGuardian/gg-shield/actions/secret@main
         env:
           GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
           GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
           GITHUB_PULL_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+
+  ggshield-iac:
+    name: Check for iac vulnerabilities with ggshield
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: GitGuardian iac scan test
+        uses: GitGuardian/gg-shield/actions/iac@main
+        with:
+          args: ./
+        env:
           GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}

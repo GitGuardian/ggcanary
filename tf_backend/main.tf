@@ -20,7 +20,7 @@ terraform {
 # create an S3 bucket to store the state file in
 resource "aws_s3_bucket" "terraform-states-storage" {
   bucket = var.terraform_backend_s3_bucket
-  tags = {
+  tags   = {
     Name = "S3 Remote Terraform States Store"
     Role = "backend"
   }
@@ -43,7 +43,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform-states-
   bucket = aws_s3_bucket.terraform-states-storage.id
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "aws:kms"
+      sse_algorithm   = "aws:kms"
     }
   }
 }
@@ -62,5 +62,9 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   tags = {
     Name = "DynamoDB Terraform States Lock Table"
     Role = "locking"
+  }
+
+  server_side_encryption {
+    enabled = true
   }
 }

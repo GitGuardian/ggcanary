@@ -2,7 +2,7 @@
 data "aws_caller_identity" "current" {}
 
 
-resource "aws_cloudtrail" "ggcanary_trail" {
+resource "aws_cloudtrail" "ggcanary_trail" { # ggignore-iac: GG_IAC_0027
   name                          = "${var.global_prefix}-trail"
   s3_bucket_name                = aws_s3_bucket.ggcanary_bucket.id
   s3_key_prefix                 = "ggcanary"
@@ -71,4 +71,14 @@ resource "aws_s3_bucket_public_access_block" "ggcanary_bucket_public_access" {
   block_public_policy     = true
   restrict_public_buckets = true
   ignore_public_acls      = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "ggcanary_bucket_server_side_encryption_configuration" {
+  bucket = aws_s3_bucket.ggcanary_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
+  }
 }
