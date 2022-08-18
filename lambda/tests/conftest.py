@@ -6,6 +6,7 @@ import pytest
 
 from lambda_py.notifiers import SESNotifier
 
+password = "https://discordapp.com/api/webhooks/363115391473680395/91nFHPPElzPRPS7RIYhTbCBS5I2yzCwpMO-_z9FCGb_cK4P4e74-bwOJGbNTNiZixPum"
 
 # constants for mock data
 AWS_REGION = "us-west-2"
