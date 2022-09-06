@@ -11,9 +11,6 @@ aws_region  = "us-west-2"
 global_prefix = "CHANGEME"  # prefix used for all ggcanary resources
 
 
-Slack_notifier = {
-  enabled = true
-  parameters = {
-    WEBHOOK = "REDACTED"  # eg: https://hooks.slack.com/services/CHANGE/ME/FOR_REAL
-  }
-}
+Slack_notifiers = [{
+  webhook = "REDACTED"  # eg: https://hooks.slack.com/services/CHANGE/ME/FOR_REAL
+}]

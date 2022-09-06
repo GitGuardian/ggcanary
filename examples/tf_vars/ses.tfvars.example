@@ -12,12 +12,8 @@ aws_region  = "us-west-2"
 global_prefix = "CHANGEME"  # prefix used for all ggcanary resources
 
 
-SES_notifier = {
-  enabled = true
-  parameters = {
-    SOURCE_EMAIL_ADDRESS = "canary@my_domain.org"  # email address to send emails from
-    DEST_EMAIL_ADDRESS   = "security_email@my_domain.org"  # email address receiving alerts
-    zone_id              = "000000000000"  # Value to retrieve from Route53, that corresponds to the SOURCE_EMAIL_ADDRESS domain.
-
-  }
-}
+SES_notifiers = [{
+  zone_id              = "000000000000"  # Value to retrieve from Route53, that corresponds to the SOURCE_EMAIL_ADDRESS domain.
+  source_email_address = "canary@my_domain.org"  # email address to send emails from
+  dest_email_address   = "security_email@my_domain.org"  # email address receiving alerts
+}]

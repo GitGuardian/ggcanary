@@ -12,9 +12,9 @@ This file holds the configuration for the infrastructure and the notifiers.
 | `terraform_backend_s3_bucket` | **Optional**  | Name of the S3 bucket holding the state. Mandatory to configure with `tf_backend`       |
 | `aws_region`                  | **mandatory** | AWS region where the project will be deployed.                                          |
 | `global_prefix`               | **mandatory** | Prefix that will be used to generate unique name for resources, especially for buckets. |
-| `SES_notifier`                | Optional      | Configuration of the SES Notifier.                                                      |
-| `Slack_notifier`              | Optional      | Configuration of the Slack Notifier.                                                    |
-| `SendGrid_notifier`           | Optional      | Configuration of the SendGrid Notifier.                                                 |
+| `SES_notifiers`               | Optional      | Configuration of the SES Notifiers.                                                     |
+| `Slack_notifiers`             | Optional      | Configuration of the Slack Notifiers.                                                   |
+| `SendGrid_notifiers`          | Optional      | Configuration of the SendGrid Notifiers.                                                |
 
 See examples in [`examples/tf_vars`](/examples/tf_vars)
 

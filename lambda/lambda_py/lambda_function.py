@@ -6,11 +6,12 @@ from typing import Dict, List
 
 import boto3
 
-from .notifiers import NOTIFIER_CLASSES, INotifier
+from .notifiers import NOTIFIER_CLASSES
 from .types import LogRecord, ReportEntry
 
 
 USERNAME_TO_TRACK = os.environ["GGCANARY_USER_PREFIX"]
+LAMBDA_PARAMETERS_PATH = "./builds/ggcanary_lambda_parameters.json"
 
 
 def fetch_log_records(bucket: str, key: str) -> List[Dict]:
@@ -44,17 +45,26 @@ def get_report_entries(records: List[Dict]) -> List[ReportEntry]:
     ]
 
 
-def load_notifiers() -> List[INotifier]:
-    active_classes = [
-        notifier_class
-        for notifier_class in NOTIFIER_CLASSES
-        if notifier_class.is_enabled()
+def load_notifiers():
+    with open(LAMBDA_PARAMETERS_PATH) as json_file:
+        notifier_configs = json.load(json_file)
+
+    notifier_classes_by_kind = {
+        notif_class.kind: notif_class for notif_class in NOTIFIER_CLASSES
+    }
+    # fmt: off
+    notifiers = [
+        notifier_classes_by_kind[notifier["kind"]](
+            **notifier["parameters"]
+        )
+        for notifier in notifier_configs
     ]
+    # fmt: on
     print(
         "Enabled notifiers:",
-        [notifier_class.NAME for notifier_class in active_classes],
+        [notifier.kind for notifier in notifiers],
     )
-    return [active_class() for active_class in active_classes]
+    return notifiers
 
 
 def handler(event: Dict):

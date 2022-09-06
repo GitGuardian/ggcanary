@@ -1,10 +1,9 @@
+import json
 import os
 
 import boto3
 import moto
 import pytest
-
-from lambda_py.notifiers import SESNotifier
 
 
 # constants for mock data
@@ -23,12 +22,7 @@ os.environ["AWS_SECURITY_TOKEN"] = "testing"
 os.environ["AWS_SESSION_TOKEN"] = "testing"
 os.environ["AWS_DEFAULT_REGION"] = AWS_REGION
 
-NOTIFIER_PARAMS = {
-    "SES": {
-        "DEST_EMAIL_ADDRESS": "test@test.com",
-        "SOURCE_EMAIL_ADDRESS": "ggcanary@test.com",
-    }
-}
+MOCK_LAMBDA_PARAMETERS_FILE = "tests/data/ggcanary_lambda_parameters.json"
 
 
 def make_trigger_event(bucket_name: str, key: str):
@@ -69,12 +63,17 @@ def setup_iam(iam):
 
 
 def setup_ses(ses):
-    ses.verify_email_identity(
-        EmailAddress=NOTIFIER_PARAMS["SES"]["SOURCE_EMAIL_ADDRESS"]
-    )
+    with open(MOCK_LAMBDA_PARAMETERS_FILE) as f:
+        lambda_parameters = json.load(f)
+    for notifier_config in lambda_parameters:
+        if not notifier_config["kind"] == "ses":
+            continue
+        ses.verify_email_identity(
+            EmailAddress=notifier_config["parameters"]["source_email_address"]
+        )
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def mock_aws_data():
     with moto.mock_iam(), moto.mock_s3(), moto.mock_ses():
         iam = boto3.client("iam")
@@ -91,8 +90,17 @@ def mock_ses_validation():
     yield None
 
 
-@pytest.fixture
-def mock_ses_notifier_env_variables(monkeypatch):
-    monkeypatch.setenv("ENABLED_NOTIFIERS", SESNotifier.NAME)
-    for key, value in NOTIFIER_PARAMS["SES"].items():
-        monkeypatch.setenv(f"SES_{key}", value)
+@pytest.fixture(scope="session")
+def monkeypatch_session():
+    from _pytest.monkeypatch import MonkeyPatch
+
+    m = MonkeyPatch()
+    yield m
+    m.undo()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def mock_notifiers_config(monkeypatch_session):
+    monkeypatch_session.setattr(
+        "lambda_py.lambda_function.LAMBDA_PARAMETERS_PATH", MOCK_LAMBDA_PARAMETERS_FILE
+    )

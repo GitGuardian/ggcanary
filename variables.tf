@@ -21,68 +21,54 @@ variable "users" {
   default = {}
 }
 
-variable "SES_notifier" {
-  sensitive = true
-  type = object({
-    enabled = bool
-    parameters = object({
-      SOURCE_EMAIL_ADDRESS = string
-      DEST_EMAIL_ADDRESS   = string
-      zone_id              = string
-    })
-  })
-  default = {
-    enabled    = false
-    parameters = null
-  }
+variable "SES_notifiers" {
+  type = list(object({
+    zone_id              = string
+    source_email_address = string
+    dest_email_address   = string
+  }))
+  default = []
 }
 
-variable "Slack_notifier" {
-  sensitive = true
-  type = object({
-    enabled = bool
-    parameters = object({
-      WEBHOOK = string
-    })
-  })
-  default = {
-    enabled    = false
-    parameters = null
-  }
+variable "Slack_notifiers" {
+  type = list(object({
+    webhook = string
+  }))
+  default = []
 }
 
-variable "SendGrid_notifier" {
-  sensitive = true
-  type = object({
-    enabled = bool
-    parameters = object({
-      API_KEY              = string
-      SOURCE_EMAIL_ADDRESS = string
-      DEST_EMAIL_ADDRESSES = string
-    })
-  })
-  default = {
-    enabled    = false
-    parameters = null
-  }
+variable "SendGrid_notifiers" {
+  type = list(object({
+    api_key              = string
+    source_email_address = string
+    dest_email_addresses = string
+  }))
+  default = []
 }
+
 
 locals {
-  notifiers = [
-    {
-      name       = "SES"
-      enabled    = var.SES_notifier.enabled
-      parameters = var.SES_notifier.parameters
-    },
-    {
-      name       = "Slack"
-      enabled    = var.Slack_notifier.enabled
-      parameters = var.Slack_notifier.parameters
-    },
-    {
-      name       = "SendGrid"
-      enabled    = var.SendGrid_notifier.enabled
-      parameters = var.SendGrid_notifier.parameters
-    },
-  ]
+  ggcanary_lambda_parameters = concat(
+    [
+      for notifier_config in var.SES_notifiers :
+      {
+        kind       = "ses"
+        parameters = notifier_config
+      }
+    ],
+    [
+      for notifier_config in var.Slack_notifiers :
+      {
+        kind       = "slack"
+        parameters = notifier_config
+      }
+    ],
+    [
+      for notifier_config in var.SendGrid_notifiers :
+      {
+        kind       = "sendgrid"
+        parameters = notifier_config
+      }
+    ],
+  )
 }

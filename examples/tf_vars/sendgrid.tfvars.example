@@ -11,11 +11,8 @@ aws_region  = "us-west-2"
 global_prefix = "CHANGEME"  # prefix used for all ggcanary resources
 
 
-SendGrid_notifier = {
-  enabled = true
-  parameters = {
-    SOURCE_EMAIL_ADDRESS = "canary@my_domain.org"  # email address to send emails from
-    DEST_EMAIL_ADDRESS   = "security_email@my_domain.org"  # email address receiving alerts
-    API_KEY              = "SG.XXXX"  # Account API key
-  }
-}
+SendGrid_notifiers = [{
+  source_email_address = "canary@my_domain.org"  # email address to send emails from
+  dest_email_address   = "security_email@my_domain.org"  # email address receiving alerts
+  api_key              = "sG.XXXX"  # Account API key
+}]

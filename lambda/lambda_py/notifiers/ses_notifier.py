@@ -8,13 +8,15 @@ from .format_utils import create_email_body, create_email_subject
 
 
 class SESNotifier(INotifier):
-    NAME = "SES"
+    kind = "ses"
 
-    def __init__(self):
-        self.dest_email_address = self.param("DEST_EMAIL_ADDRESS")
-        self.source_email_address = self.param("SOURCE_EMAIL_ADDRESS")
+    def __init__(
+        self, dest_email_address: str, source_email_address: str, **kwargs
+    ) -> None:
+        self.dest_email_address = dest_email_address
+        self.source_email_address = source_email_address
 
-    def format_report_entry(self, report_entry: ReportEntry):
+    def format_report_entry(self, report_entry: ReportEntry) -> str:
         entry_header_formatted = (
             "{report_entry.username}: {len(report_entry.records)} usage occurences.\n"
             "{report_entry.tags}"
@@ -35,7 +37,7 @@ class SESNotifier(INotifier):
             "Body": {"Text": {"Data": body, "Charset": "UTF-8"}},
         }
 
-    def send_notification(self, report_entries: List[ReportEntry]):
+    def send_notification(self, report_entries: List[ReportEntry]) -> None:
         boto3.client("ses").send_email(
             Source=self.source_email_address,
             Destination={"ToAddresses": [self.dest_email_address]},

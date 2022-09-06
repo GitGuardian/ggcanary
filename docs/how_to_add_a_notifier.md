@@ -27,15 +27,9 @@ Finally, you need to modify the `lambda_py/notifiers/__init__.py` file:
 
 You will need to modify the `variables.tf` file:
 
-1. Add a variable specific to your notifier, for example `Custom_notifier`. This variable must have two fields:
+1. Add a variable specific to your notifier, for example `Custom_notifier`. The variable type must be a list of object, where each object holds the configuration for a notifier instance (allowing to configure multiple notifiers of the same kind).
 
-- `enabled` (`bool`), which will specify whether this notifier is enabled
-- `parameters` (`object`), which will hold configuration bits specific to this notifier. The subfields of the `parameters` field will be passed as-is to the lambda function, as environment variables. This means `parameters` should be a mapping from string to string.
-
-2. Extend the `locals.parameters` block with the configuration for you notifier.
-
-- The `name` field should be the same as the one used in your notifier class (comparison will be made case-independant).
-- The `enabled` and `parameters` take the values from the variable declared above.
+2. Extend the `locals.ggcanary_lambda_parameters` block with the configuration for your notifier.
 
 ### Update dependencies
 
@@ -58,10 +52,11 @@ from ..types import ReportEntry
 from .abstract_notifier import INotifier
 
 class MyNotifier(INotifier):
-    NAME = "MY_NOTIFIER"
+    kind = "my_notifier"
 
-    def __init__(self):
-        self.param = os.environ["MY_PARAM"]
+    def __init__(self, param1, param2, **kwargs):
+        self.param1 = param1
+        self.param2 = param2
 
     def send_notification(self, report_entries: List[ReportEntry]):
         # format entries and send message
@@ -72,49 +67,44 @@ class MyNotifier(INotifier):
 Update nofiers `__init__.py` file:
 
 ```python
-from typing import List, Type
-
-from .abstract_notifier import INotifier
 from .ses_notifier import SESNotifier
 ...
 from .my_notifier import MyNotifier
 
-NOTIFIER_CLASSES: List[Type[INotifier]] = [SESNotifier, ..., MyNotifier]
+NOTIFIER_CLASSES = (SESNotifier, ..., MyNotifier)
 
-__all__ = (NOTIFIER_CLASSES)
+__all__ = (NOTIFIER_CLASSES,)
 ```
 
 Update `variables.tf`:
 
 ```terraform
-variable my_notifier {
-  type = object({
-    enabled = bool
-    parameters = object({
-      MY_PARAM = string
-    })
-  })
-  default = {
-    enabled    = false
-    parameters = null
-  }
+variable my_notifiers {
+  type = list(object({
+    my_param = string
+  }))
+  default = []
 }
 
 locals {
-  notifiers = [
-    {
-      name       = "SES"
-      enabled    = var.SES_notifier.enabled
-      parameters = var.SES_notifier.parameters
-    },
-    {
+  ggcanary_lambda_parameters = concat(
+    [
+      for notifier_config in var.SES_notifiers :
+      {
+        kind       = "ses"
+        parameters = notifier_config
+      }
+    ],
+    [
       ...
-    },
-    {
-      name       = "MY_NOTIFIER"
-      enabled    = var.my_notifier.enabled
-      parameters = var.my_notifier.parameters
-    }
+    ],
+    [
+      for notifier_config in var.my_notifiers :
+      {
+        kind       = "my_notifier"  # must correspond to the `kind` attribute of `MyNotifier`
+        parameters = notifier_config
+      }
+    ]
   ]
 }
 ```
