@@ -8,9 +8,6 @@ from .abstract_notifier import INotifier
 
 
 class IWebhookNotifier(INotifier, abc.ABC):
-    def __init__(self):
-        self.template_parameters = self.params()
-
     @abc.abstractmethod
     def format_payload(self, report_entries: List[ReportEntry]) -> Dict:
         pass

@@ -1,28 +1,24 @@
 locals {
-  lambda_function_name = "${var.global_prefix}-lambda"
+  lambda_function_name   = "${var.global_prefix}-lambda"
+  lambda_parameters_file = "builds/ggcanary_lambda_parameters.json"
 }
 
-locals {
-  enabled_notifiers = join(",", [
-    for value in local.notifiers : upper(value.name)
-    if value.enabled
-  ])
-  parameters_map_list = tolist([
-    for value in local.notifiers : {
-      for param_name, param_value in value.parameters :
-      "${upper(value.name)}_${param_name}" => param_value
-    }
-    if value.enabled
-  ])
 
-  parameters_map = merge(local.parameters_map_list...)
+resource "local_sensitive_file" "notifier_parameters" {
+  content         = jsonencode(local.ggcanary_lambda_parameters)
+  filename        = local.lambda_parameters_file
+  file_permission = "0600"
 }
+
 
 
 module "lambda_function" {
 
   source  = "terraform-aws-modules/lambda/aws"
   version = "3.2.0"
+  depends_on = [
+    local_sensitive_file.notifier_parameters
+  ]
 
   source_path = [
     {
@@ -32,6 +28,10 @@ module "lambda_function" {
     {
       path          = "lambda/lambda_py",
       prefix_in_zip = "lambda_py",
+    },
+    {
+      path     = "."
+      patterns = ["!.*", local.lambda_parameters_file]
     }
   ]
   function_name = local.lambda_function_name
@@ -39,13 +39,10 @@ module "lambda_function" {
   runtime       = "python3.8"
   publish       = true
 
-  environment_variables = merge(
-    {
-      GGCANARY_USER_PREFIX = var.global_prefix,
-      ENABLED_NOTIFIERS    = local.enabled_notifiers
-    },
-    local.parameters_map
-  )
+  environment_variables = {
+    GGCANARY_USER_PREFIX = var.global_prefix,
+  }
+
 
   allowed_triggers = {
     AllowExecutionFromS3Bucket = {
@@ -106,4 +103,14 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   }
   depends_on = [module.lambda_function]
 
+}
+
+resource "null_resource" "remove_temp_file" {
+  provisioner "local-exec" {
+    command = "rm -f ${local.lambda_parameters_file}"
+  }
+  depends_on = [module.lambda_function]
+  triggers = {
+    always_run = timestamp()
+  }
 }

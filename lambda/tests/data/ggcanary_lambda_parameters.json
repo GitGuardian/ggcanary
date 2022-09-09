@@ -1,0 +1,22 @@
+[
+  {
+    "parameters": {
+      "dest_email_address": "security@my_domain.org",
+      "source_email_address": "canary@my_domain.org",
+      "zone_id": "XXZONEIDXX"
+    },
+    "kind": "ses"
+  },
+  {
+    "parameters": { "webhook": "https://hooks.slack.com/services/SECRET" },
+    "kind": "slack"
+  },
+  {
+    "parameters": {
+      "api_key": "secret",
+      "dest_email_addresses": "security@my_domain.org",
+      "source_email_address": "canary@my_domain.org"
+    },
+    "kind": "sendgrid"
+  }
+]
