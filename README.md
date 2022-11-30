@@ -48,7 +48,9 @@ The main steps to set up the project are the following:
    2. In the same directory, run `terraform apply -var-file="../terraform.tfvars"`
 7. Run `./scripts/check_setup.sh` to check that you have all the required dependencies, and that you have correctly setup the project
 8. Run `terraform init`
-9. Run `terraform apply` (this will create all resources for the ggcanaries)
+9. Run `terraform apply` (this will create all resources for the ggcanaries)  
+   **Note:** this step requires a `python3.8` to be available in your `$PATH`. If you use `pipenv`, you can for example use the virtualenv
+   associated with the `./lambda` directory (by running `cd lambda; pipenv shell; cd ..`.).
 10. ggcanary tokens can be listed using `./scripts/list_keys.sh`
 
 # How-tos
