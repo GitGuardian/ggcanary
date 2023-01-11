@@ -41,7 +41,7 @@ variable "SendGrid_notifiers" {
   type = list(object({
     api_key              = string
     source_email_address = string
-    dest_email_addresses = string
+    dest_email_addresses = list(string)
   }))
   default = []
 }
