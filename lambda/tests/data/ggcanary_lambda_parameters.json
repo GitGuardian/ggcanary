@@ -15,7 +15,7 @@
     "parameters": {
       "api_key": "secret",
       "dest_email_addresses": "security@my_domain.org",
-      "source_email_address": "canary@my_domain.org"
+      "source_email_addresses": ["canary@my_domain.org"]
     },
     "kind": "sendgrid"
   }
