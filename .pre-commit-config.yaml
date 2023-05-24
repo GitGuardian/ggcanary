@@ -7,7 +7,7 @@ repos:
         language_version: python3
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
       - id: check-json
       - id: check-added-large-files
@@ -15,13 +15,13 @@ repos:
       - id: check-merge-conflict
 
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.2
+    rev: 4.0.1
     hooks:
       - id: flake8
         args: [--config, ./lambda/setup.cfg]
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.9.3
+    rev: 5.12.0
     hooks:
       - id: isort
         args: [--filter-files, --settings-path, ./lambda/setup.cfg]
@@ -33,19 +33,19 @@ repos:
         stages: [commit-msg]
 
   - repo: https://github.com/pre-commit/mirrors-prettier # to format JSON, YAML and markdown files among others
-    rev: v2.4.1
+    rev: v2.6.2
     hooks:
       - id: prettier
 
   - repo: https://github.com/gitguardian/ggshield
-    rev: v1.13.0
+    rev: v1.15.1
     hooks:
       - id: ggshield
         language_version: python3
         stages: [commit]
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.62.3
+    rev: v1.79.1
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
