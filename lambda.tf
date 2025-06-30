@@ -36,7 +36,7 @@ module "lambda_function" {
   ]
   function_name = local.lambda_function_name
   handler       = "entrypoint.lambda_handler"
-  runtime       = "python3.8"
+  runtime       = "python3.10"
   timeout       = 90
   publish       = true
 
