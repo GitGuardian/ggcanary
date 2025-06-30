@@ -20,4 +20,4 @@ isort = "==5.9.3"
 pipfile-requirements = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3"
